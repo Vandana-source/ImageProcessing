@@ -25,8 +25,11 @@ class ImageProcessor:
         # Perform specified operations
         for op in operations:
             if op["name"] == 'rotate':
-                image = image.rotate(op["degrees"])
-                print(image.width, image.height)
+                if -10000 <= op["degrees"] <= 10000:
+                    image = image.rotate(op["degrees"])
+                    print(image.width, image.height)                
+                else:
+                    print("Invalid value. Rotation degrees must be within the range -10000 to +10000.")
             elif op["name"] == 'flip':
                 if op["axis"] == 'horizontal':
                     image = image.transpose(Image.FLIP_LEFT_RIGHT)
@@ -34,13 +37,18 @@ class ImageProcessor:
                 elif op["axis"] == 'vertical':
                     image = image.transpose(Image.FLIP_TOP_BOTTOM)
                     print("The image is flipped vertically")
+                else:
+                    print("Invalid axis provided for flip operation. Please provide 'horizontal' or 'vertical'.")
             elif op["name"] == 'resizing':
                 percentage = op["percentage"]
-                width, height = image.size
-                new_width = int(width * (1 + percentage / 100))
-                new_height = int(height * (1 + percentage / 100))
-                image = image.resize((new_width, new_height))
-                print("The image is resized ")
+                if -95 <= percentage <= 500:
+                    width, height = image.size
+                    new_width = int(width * (1 + percentage / 100))
+                    new_height = int(height * (1 + percentage / 100))
+                    image = image.resize((new_width, new_height))
+                    print("The image is resized ")                
+                else:
+                    print("Invalid value. Resize percentage must be within the range -95% to +500%.")
             elif op["name"] == 'thumbnail':
                 if thumbnail_generated:
                     # Return an error if thumbnail already generated
@@ -59,6 +67,8 @@ class ImageProcessor:
                     print("The image is grayscaled ")
                 elif op["scale"] == "no":
                     image = image
+                else:
+                    print("Invalid scale provided for grayscale operation. Please provide 'yes' or 'no'.")
             elif op["name"] == 'rotate_left_right':
                 if op["side"] == 'right':
                     image = image.transpose(Image.ROTATE_90)
@@ -66,6 +76,8 @@ class ImageProcessor:
                 elif op["side"] == 'left':
                     image = image.transpose(Image.ROTATE_270)
                     print("The image is rotated right")
+                else:
+                    print("Invalid side provided for rotate operation. Please provide 'left' or 'right'.")
 
         # Convert image to RGB mode if it's in RGBA mode
         if image.mode != 'RGB':

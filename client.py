@@ -50,7 +50,10 @@ while True:
             continue
     elif operation_choice == '2':
         operation["name"] = 'flip'
-        operation["axis"] = input("Enter the axis to flip (horizontal or vertical): ")
+        operation["axis"] = input("Enter the axis to flip (horizontal or vertical): ").lower()
+        if operation["axis"].lower() not in ['horizontal', 'vertical']:
+            print("Invalid axis. Please provide 'horizontal' or 'vertical'.")
+            continue
     elif operation_choice == '3':
         operation["name"] = 'resizing'
         percentage = int(input("Enter the percentage to resize (-95% to +500%): "))
@@ -64,10 +67,16 @@ while True:
         operation["thumb"] = (200, 200)
     elif operation_choice == '5':
         operation["name"] = 'grayscale'
-        operation["scale"] = input("Convert to grayscale (yes or no): ")
+        operation["scale"] = input("Convert to grayscale (yes or no): ").lower()
+        if operation["scale"].lower() not in ['yes', 'no']:
+            print("Invalid scale. Please provide 'yes' or 'no'.")
+            continue
     elif operation_choice == '6':
         operation["name"] = 'rotate_left_right'
-        operation["side"] = input("Enter the side to rotate (left or right): ")
+        operation["side"] = input("Enter the side to rotate (left or right): ").lower()
+        if operation["side"].lower() not in ['left', 'right']:
+            print("Invalid axis. Please provide 'left' or 'right'.")
+            continue
 
     # Add the operation to the list
     operations.append(operation)
